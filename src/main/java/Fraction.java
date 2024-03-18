@@ -20,12 +20,14 @@ public class Fraction implements Fractionable{
 
     public void setDenum(int denum)
     {
-        this.num=denum;
+        this.denum=denum;
     }
 
     @Override
     public double doubleValue() {
         //System.out.println("invoke double value");
+        System.out.println("num"+num);
+        System.out.println("denum"+denum);
         return (double) num/denum;
     }
 }
