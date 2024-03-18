@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class FractionableInvHandler implements InvocationHandler {
 
     private Object obj;
-    private HashMap <String,Double> cacheMap;// при добавлении количества кэшированных методов в интерфейс Fractionable -
+    private HashMap <String,Object> cacheMap;// при добавлении количества кэшированных методов в интерфейс Fractionable -
                                              // все они будут учтены без необходимости изменений
     public FractionableInvHandler(Object obj)
         {
@@ -22,7 +22,7 @@ public class FractionableInvHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //System.out.println("It works");
-        double retValue;
+        Object retValue;
         Method m = obj.getClass().getMethod(method.getName(), method.getParameterTypes());
         Field flagMutator=obj.getClass().getDeclaredField("flagMutator");
         flagMutator.setAccessible(true);
@@ -33,6 +33,7 @@ public class FractionableInvHandler implements InvocationHandler {
         {
             if(flagMutator!=null)
                 flagMutator.setInt(obj,1);
+            cacheMap.clear(); // сбрасываем кэш, сразу для всех кэшируемых функций, сколько бы их ни было
 
             System.out.println("Установлен флаг Mutator, по факту вызова функции: "+m.getName());
             return m.invoke(obj, args);
@@ -40,16 +41,14 @@ public class FractionableInvHandler implements InvocationHandler {
         anns = m.getAnnotationsByType(Cache.class);
         for (Annotation a: anns)
             {
-
-                if(flagMutator.getInt(obj)==1)
+                if(cacheMap.get(method.getName())==null) // значения еще нет в кэше, добавляем
                 {
                     flagMutator.setInt(obj,0);
-                    retValue=(double)m.invoke(obj, args);
+                    retValue=m.invoke(obj, args);
 
                     cacheMap.put(method.getName(),retValue);
                     System.out.println("retValue "+retValue);
                     return retValue;
-
                 }
 
                 System.out.println("Значение из кэша");

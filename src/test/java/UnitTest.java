@@ -38,6 +38,7 @@ public class UnitTest {
     public void testCache()
     {
         double result;
+        int intResult;
 
         System.out.println("Hello World!");
         Fraction fr=new Fraction(2,3);
@@ -71,5 +72,13 @@ public class UnitTest {
         result=((Fractionable)pr).doubleValue();
         checkResultOutput("Реальное вычисление, кэш сброшен");
         Assertions.assertEquals(String.valueOf(result),"1.3333333333333333");
+
+        // протестируем еще и значение int
+        intResult=((Fractionable)pr).intValue();
+        checkResultOutput("Возвращаем значение типа int не из кэша!");
+        Assertions.assertEquals(String.valueOf(intResult),"100");
+        intResult=((Fractionable)pr).intValue();
+        checkResultOutput("Значение из кэша");
+        Assertions.assertEquals(String.valueOf(intResult),"100");
     }
 }

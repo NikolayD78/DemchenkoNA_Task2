@@ -30,4 +30,11 @@ public class Fraction implements Fractionable{
         System.out.println("denum"+denum);
         return (double) num/denum;
     }
+
+    @Override
+    public int intValue(){
+        int valTest=100;
+
+        return valTest;
+    }
 }

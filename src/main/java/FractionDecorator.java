@@ -42,4 +42,12 @@ public class FractionDecorator implements Fractionable{
 
     }
 
+    @Override
+    @Cache
+    public int intValue(){
+
+        System.out.println("Возвращаем значение типа int не из кэша!");
+
+        return baseFraction.intValue();
+    }
 }
