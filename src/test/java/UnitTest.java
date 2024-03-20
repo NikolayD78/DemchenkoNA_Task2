@@ -48,7 +48,7 @@ public class UnitTest {
 
         pr = ((FractionDecorator)num).getProxy();
         result=((Fractionable)pr).doubleValue();
-        checkResultOutput("Реальное вычисление, кэш сброшен");
+        checkResultOutput("Реальное вычисление, значения в кэше нет");
         Assertions.assertEquals(String.valueOf(result),"0.6666666666666666");
 
         result=((Fractionable)pr).doubleValue();
@@ -57,9 +57,9 @@ public class UnitTest {
 
 
         ((Fractionable)pr).setNum(20);
-        checkResultOutput("Установлен флаг Mutator, по факту вызова функции");
+        checkResultOutput("Сброшен кэш, по факту вызова функции с аннотацией @Mutator");
         result=((Fractionable)pr).doubleValue();
-        checkResultOutput("Реальное вычисление, кэш сброшен");
+        checkResultOutput("Реальное вычисление, значения в кэше нет");
         Assertions.assertEquals(String.valueOf(result),"6.666666666666667");
 
         result=((Fractionable)pr).doubleValue();
@@ -67,10 +67,10 @@ public class UnitTest {
         Assertions.assertEquals(String.valueOf(result),"6.666666666666667");
 
         ((Fractionable)pr).setDenum(15);
-        checkResultOutput("Установлен флаг Mutator, по факту вызова функции");
+        checkResultOutput("Сброшен кэш, по факту вызова функции с аннотацией @Mutator");
 
         result=((Fractionable)pr).doubleValue();
-        checkResultOutput("Реальное вычисление, кэш сброшен");
+        checkResultOutput("Реальное вычисление, значения в кэше нет");
         Assertions.assertEquals(String.valueOf(result),"1.3333333333333333");
 
         // протестируем еще и значение int

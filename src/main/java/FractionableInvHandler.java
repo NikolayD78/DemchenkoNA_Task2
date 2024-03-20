@@ -1,11 +1,7 @@
 import java.lang.annotation.Annotation;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.invoke.VarHandle;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class FractionableInvHandler implements InvocationHandler {
@@ -24,18 +20,13 @@ public class FractionableInvHandler implements InvocationHandler {
         //System.out.println("It works");
         Object retValue;
         Method m = obj.getClass().getMethod(method.getName(), method.getParameterTypes());
-        Field flagMutator=obj.getClass().getDeclaredField("flagMutator");
-        flagMutator.setAccessible(true);
-
 
         Annotation[] anns = m.getAnnotationsByType(Mutator.class);
         for (Annotation a: anns)
         {
-            if(flagMutator!=null)
-                flagMutator.setInt(obj,1);
             cacheMap.clear(); // сбрасываем кэш, сразу для всех кэшируемых функций, сколько бы их ни было
 
-            System.out.println("Установлен флаг Mutator, по факту вызова функции: "+m.getName());
+            System.out.println("Сброшен кэш, по факту вызова функции с аннотацией @Mutator: "+m.getName());
             return m.invoke(obj, args);
         }
         anns = m.getAnnotationsByType(Cache.class);
@@ -43,7 +34,6 @@ public class FractionableInvHandler implements InvocationHandler {
             {
                 if(cacheMap.get(method.getName())==null) // значения еще нет в кэше, добавляем
                 {
-                    flagMutator.setInt(obj,0);
                     retValue=m.invoke(obj, args);
 
                     cacheMap.put(method.getName(),retValue);

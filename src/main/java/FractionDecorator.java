@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class FractionDecorator implements Fractionable{
 
     private Fractionable baseFraction;
-    private int flagMutator=1; // mutator (изначально считаем значение дроби измененным)
+
 
     private FractionDecorator(){}
 
@@ -37,7 +37,7 @@ public class FractionDecorator implements Fractionable{
     @Cache
     public double doubleValue() {
 
-            System.out.println("Реальное вычисление, кэш сброшен");
+            System.out.println("Реальное вычисление, значения в кэше нет");
             return baseFraction.doubleValue();
 
     }
